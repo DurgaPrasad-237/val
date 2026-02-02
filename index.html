@@ -559,21 +559,18 @@
 @media (max-width: 600px) {
 
     .puzzle-board {
-        width: 95vw;
-        max-width: 95vw;
+        width: 100%;
+        max-width: 360px;   /* 🔥 DO NOT USE vw */
+        margin: 16px auto;
     }
 
-    .puzzle-slot,
-    .puzzle-piece {
-        aspect-ratio: 1 / 1;
-        min-height: auto;
-    }
-
-    .puzzle-piece {
-        background-size: 400% 400%;
-        background-position: center;
+    .puzzle-pieces-container {
+        width: 100%;
+        max-width: 360px;
+        margin: 12px auto;
     }
 }
+
 /* Allow scrolling on mobile puzzle */
 #task3 {
     overflow-y: auto;
@@ -592,6 +589,78 @@ body {
 .subtitle {
     margin-bottom: 20px;
 }
+/* ===== PUZZLE BOARD (MOBILE SAFE) ===== */
+.puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    max-width: 360px;     /* 🔥 IMPORTANT */
+    margin: 20px auto;
+    gap: 4px;
+    box-sizing: border-box;
+}
+
+/* slots */
+.puzzle-slot {
+    aspect-ratio: 1 / 1;
+    background: #ffc7e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* filled slot */
+.puzzle-slot.filled {
+    background-size: 400% 400%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* correct piece */
+.puzzle-slot.correct {
+    outline: 3px solid #4caf50;
+}
+
+/* ===== PIECES ===== */
+.puzzle-pieces-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 360px;     /* 🔥 MATCH BOARD */
+    margin: 15px auto;
+}
+
+.puzzle-piece {
+    aspect-ratio: 1 / 1;
+    background-size: 400% 400%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px;
+    border: 2px solid white;
+}
+
+.puzzle-piece.used {
+    opacity: 0.35;
+}
+
+/* ===== HARD MOBILE SAFETY ===== */
+body {
+    overflow-x: hidden;
+}
+
+.container {
+    overflow-x: hidden;
+}
+.puzzle-slot,
+.puzzle-piece {
+    aspect-ratio: 1 / 1;
+    background-size: 400% 400%;
+    background-position: center;
+}
+body, .container {
+    overflow-x: hidden;
+}
+
 
 
     </style>
