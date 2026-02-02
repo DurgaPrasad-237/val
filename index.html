@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Special Journey For You 💕</title>
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#e91e63">
+    <meta name="theme-color" content="#e91e63">
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
     <style>
@@ -181,12 +181,12 @@
             border-color: #f44336;
         }
 
-        /* Task 2: Memory Game */
+        /* Task 2: Memory Game - SIMPLIFIED - Only 3 pairs */
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            max-width: 500px;
+            max-width: 400px;
             margin: 30px auto;
         }
 
@@ -199,34 +199,48 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
         }
 
         .memory-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
         }
 
         .memory-card.flipped {
             background: white;
+            animation: flipCard 0.6s ease;
         }
 
         .memory-card.matched {
             background: #c8e6c9;
             pointer-events: none;
+            animation: matchPulse 0.8s ease;
+        }
+
+        @keyframes flipCard {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         /* Task 3: Photo Jigsaw Puzzle */
         .puzzle-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: 90vw;
-    max-width: 420px;
-    aspect-ratio: 1 / 1;
-    margin: 20px auto;
-    gap: 2px;
-}
-
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 1 / 1;
+            margin: 20px auto;
+            gap: 2px;
+        }
 
         .puzzle-slot {
             aspect-ratio: 1;
@@ -234,6 +248,12 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .puzzle-slot:hover {
+            transform: scale(1.05);
         }
 
         .puzzle-slot.filled {
@@ -241,16 +261,14 @@
             background-repeat: no-repeat;
         }
 
-        .puzzle-slot.filled,
-.puzzle-piece {
-    background-size: 400% 400%;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-
         .puzzle-slot.correct {
             box-shadow: inset 0 0 0 3px #4caf50;
+            animation: correctPiece 0.5s ease;
+        }
+
+        @keyframes correctPiece {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .puzzle-pieces-container {
@@ -259,6 +277,9 @@
             gap: 10px;
             max-width: 500px;
             margin: 20px auto;
+            max-height: 45vh;
+            overflow-y: auto;
+            padding-bottom: 20px;
         }
 
         .puzzle-piece {
@@ -282,48 +303,120 @@
             pointer-events: none;
         }
 
-        /* Task 4: Word Puzzle */
+        /* Task 4: Word Puzzle - ZIGZAG LAYOUT */
         .word-puzzle-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 30px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
         }
 
         .puzzle-word {
             background: white;
             border: 3px solid #e91e63;
-            padding: 15px 25px;
-            border-radius: 12px;
-            font-size: 22px;
-            cursor: grab;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
             user-select: none;
             transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .puzzle-word:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+            border-color: #c2185b;
+        }
+
+        .puzzle-word.selected {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            transform: scale(1.15);
+            animation: selectPulse 0.5s ease;
+        }
+
+        @keyframes selectPulse {
+            0%, 100% { transform: scale(1.15); }
+            50% { transform: scale(1.25); }
         }
 
         .puzzle-word.placed {
-            opacity: 0.5;
+            opacity: 0.3;
             pointer-events: none;
         }
 
-        .drop-zone {
-            min-height: 60px;
+        /* Zigzag positioning */
+        .puzzle-word:nth-child(1) { grid-column: 2; margin-top: 0; }
+        .puzzle-word:nth-child(2) { grid-column: 1; margin-top: 30px; }
+        .puzzle-word:nth-child(3) { grid-column: 3; margin-top: 30px; }
+        .puzzle-word:nth-child(4) { grid-column: 2; margin-top: 60px; }
+        .puzzle-word:nth-child(5) { grid-column: 1; margin-top: 90px; }
+
+        .selected-words-display {
+            min-height: 80px;
             border: 3px dashed #e91e63;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.7);
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
             align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #c2185b;
+        }
+
+        /* Error Animation */
+        .error-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-overlay.active {
+            display: flex;
+        }
+
+        .error-message {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            animation: shakeNo 0.8s ease;
+        }
+
+        @keyframes shakeNo {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        .error-emoji {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: sadFace 1s ease infinite;
+        }
+
+        @keyframes sadFace {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         /* Task 5: Love Calculator */
@@ -356,30 +449,103 @@
             50% { transform: scale(1.3); }
         }
 
-        /* Task 6: True/False Game */
+        /* Task 6: Love Facts - CUSTOM QUESTIONS */
         .tf-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 30px 0;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 30px auto;
         }
 
-        .true-btn {
-            background: linear-gradient(135deg, #4caf50, #388e3c);
+        .tf-option {
+            background: white;
+            border: 3px solid #e91e63;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .false-btn {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
+        .tf-option:hover {
+            background: #fff0f6;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
         }
 
-        .statement {
-            font-size: 24px;
+        .tf-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+            animation: correctAnswer 0.6s ease;
+        }
+
+        .tf-option.wrong {
+            background: #ffcdd2;
+            border-color: #f44336;
+            animation: wrongAnswer 0.6s ease;
+        }
+
+        @keyframes correctAnswer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes wrongAnswer {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .question-text {
+            font-size: 28px;
             padding: 30px;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 15px;
             margin: 20px 0;
             line-height: 1.6;
+            color: #880e4f;
+            font-weight: bold;
+        }
+
+        /* Funny Message Overlay */
+        .funny-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .funny-overlay.active {
+            display: flex;
+        }
+
+        .funny-message {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .funny-emoji {
+            font-size: 100px;
+            margin-bottom: 20px;
         }
 
         /* Final Proposal */
@@ -462,214 +628,129 @@
             margin: 20px 0;
         }
 
+        /* RESPONSIVE DESIGN */
         @media (max-width: 768px) {
             .title {
                 font-size: 42px;
             }
-            .memory-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
+            
+            .card {
+                padding: 30px 20px;
+                border-radius: 20px;
             }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .button {
+                width: 100%;
+                font-size: 18px;
+                padding: 15px 30px;
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                max-width: 90vw;
+            }
+
             .memory-card {
                 font-size: 30px;
             }
+
             .puzzle-word {
-                font-size: 18px;
-                padding: 12px 20px;
+                font-size: 20px;
+                padding: 15px 20px;
             }
+
+            .word-puzzle-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .puzzle-word:nth-child(1) { grid-column: 1; margin-top: 0; }
+            .puzzle-word:nth-child(2) { grid-column: 2; margin-top: 0; }
+            .puzzle-word:nth-child(3) { grid-column: 1; margin-top: 20px; }
+            .puzzle-word:nth-child(4) { grid-column: 2; margin-top: 20px; }
+            .puzzle-word:nth-child(5) { grid-column: 1; margin-top: 40px; }
+
+            .selected-words-display {
+                font-size: 24px;
+            }
+
             .puzzle-board, .puzzle-pieces-container {
-                max-width: 100%;
+                max-width: 92vw;
+            }
+
+            .heart-click {
+                font-size: 48px;
+            }
+
+            .tf-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .question-text {
+                font-size: 22px;
             }
         }
-        /* ===== MOBILE FIXES ===== */
-@media (max-width: 600px) {
 
-    .card {
-        padding: 25px 15px;
-        border-radius: 20px;
-    }
+        @media (max-width: 480px) {
+            .title {
+                font-size: 36px;
+            }
 
-    .title {
-        font-size: 36px;
-    }
+            .emoji-big {
+                font-size: 60px;
+            }
 
-    .subtitle {
-        font-size: 18px;
-    }
+            .error-emoji, .funny-emoji {
+                font-size: 80px;
+            }
 
-    /* Puzzle scaling */
-    .puzzle-board,
-    .puzzle-pieces-container {
-        max-width: 92vw;
-    }
+            .error-message, .funny-message {
+                padding: 30px 20px;
+            }
+        }
 
-    .puzzle-board {
-        gap: 3px;
-    }
+        .puzzle-piece:active,
+        .puzzle-slot:active,
+        .puzzle-word:active {
+            transform: scale(0.95);
+        }
 
-    .puzzle-piece {
-        border-radius: 8px;
-        box-shadow: none;
-    }
-
-    .puzzle-piece:hover {
-        transform: none; /* hover useless on mobile */
-    }
-
-    .puzzle-slot {
-        border-radius: 6px;
-    }
-
-    /* Bigger touch targets */
-    .puzzle-piece,
-    .puzzle-slot {
-        min-height: 70px;
-    }
-
-    /* Buttons */
-    .button {
-        width: 100%;
-        font-size: 18px;
-        padding: 15px;
-    }
-
-    /* Hearts */
-    .heart-click {
-        font-size: 48px;
-    }
-
-    /* Memory game */
-    .memory-grid {
-        max-width: 90vw;
-        gap: 8px;
-    }
-
-    .memory-card {
-        font-size: 28px;
-    }
-}
-
-/* Touch feedback */
-.puzzle-piece:active,
-.puzzle-slot:active {
-    transform: scale(0.95);
-}
-
-
-@media (max-width: 600px) {
-
-    .puzzle-board {
-        width: 100%;
-        max-width: 360px;   /* 🔥 DO NOT USE vw */
-        margin: 16px auto;
-    }
-
-    .puzzle-pieces-container {
-        width: 100%;
-        max-width: 360px;
-        margin: 12px auto;
-    }
-}
-
-/* Allow scrolling on mobile puzzle */
-#task3 {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* Prevent accidental horizontal scroll */
-body {
-    overflow-x: hidden;
-}
-.puzzle-pieces-container {
-    max-height: 45vh;
-    overflow-y: auto;
-    padding-bottom: 20px;
-}
-.subtitle {
-    margin-bottom: 20px;
-}
-/* ===== PUZZLE BOARD (MOBILE SAFE) ===== */
-.puzzle-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: 100%;
-    max-width: 360px;     /* 🔥 IMPORTANT */
-    margin: 20px auto;
-    gap: 4px;
-    box-sizing: border-box;
-}
-
-/* slots */
-.puzzle-slot {
-    aspect-ratio: 1 / 1;
-    background: #ffc7e0;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* filled slot */
-.puzzle-slot.filled {
-    background-size: 400% 400%;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-/* correct piece */
-.puzzle-slot.correct {
-    outline: 3px solid #4caf50;
-}
-
-/* ===== PIECES ===== */
-.puzzle-pieces-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    width: 100%;
-    max-width: 360px;     /* 🔥 MATCH BOARD */
-    margin: 15px auto;
-}
-
-.puzzle-piece {
-    aspect-ratio: 1 / 1;
-    background-size: 400% 400%;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 8px;
-    border: 2px solid white;
-}
-
-.puzzle-piece.used {
-    opacity: 0.35;
-}
-
-/* ===== HARD MOBILE SAFETY ===== */
-body {
-    overflow-x: hidden;
-}
-
-.container {
-    overflow-x: hidden;
-}
-.puzzle-slot,
-.puzzle-piece {
-    aspect-ratio: 1 / 1;
-    background-size: 400% 400%;
-    background-position: center;
-}
-body, .container {
-    overflow-x: hidden;
-}
-
-
-
+        body {
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <body>
     <audio id="bg-music" loop>
-    <source src="gehra.mp3" type="audio/mpeg">
-</audio>
+        <source src="gehra.mp3" type="audio/mpeg">
+    </audio>
+    
     <div class="heart-container" id="heartContainer"></div>
+
+    <!-- Error Overlay -->
+    <div class="error-overlay" id="errorOverlay">
+        <div class="error-message">
+            <div class="error-emoji">😢</div>
+            <h2 class="title" style="font-size: 36px;">Not Allowed!</h2>
+            <p class="subtitle" style="font-size: 20px;">Please select the correct words! 💔</p>
+        </div>
+    </div>
+
+    <!-- Funny Overlay for Question 4 -->
+    <div class="funny-overlay" id="funnyOverlay">
+        <div class="funny-message">
+            <div class="funny-emoji">😂</div>
+            <h2 class="title" style="font-size: 36px; color: #f44336;">Sorry! Wrong Answer! 😅</h2>
+            <p class="subtitle" style="font-size: 20px; margin: 20px 0;">Just kidding! 😄</p>
+            <h2 class="title" style="font-size: 32px; color: #4caf50;">You're Right! ✓</h2>
+            <p class="subtitle" style="font-size: 22px; color: #880e4f;">The answer is <strong>LAHARI</strong>! 💕</p>
+        </div>
+    </div>
 
     <div class="container">
         <!-- Welcome Screen -->
@@ -700,7 +781,7 @@ body, .container {
             </div>
         </div>
 
-        <!-- Task 2: Memory Game -->
+        <!-- Task 2: Memory Game - Only 3 matches needed -->
         <div class="screen" id="task2">
             <div class="card">
                 <div class="progress-bar">
@@ -708,8 +789,8 @@ body, .container {
                 </div>
                 <h2 class="title">Memory Match 🧠</h2>
                 <div class="emoji-big">💖</div>
-                <p class="subtitle">Find all the matching pairs of love emojis!</p>
-                <div class="score-display">Matches: <span id="matches">0</span>/8</div>
+                <p class="subtitle">Find all 3 matching pairs of love emojis!</p>
+                <div class="score-display">Matches: <span id="matches">0</span>/3</div>
                 <div class="memory-grid" id="memory-grid"></div>
                 <button class="button" id="memory-next" onclick="nextTask(3)" disabled>Continue →</button>
             </div>
@@ -739,13 +820,13 @@ body, .container {
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 66%"></div>
                 </div>
-                <h2 class="title">Love Message 💌</h2>
+                <h2 class="title">Secret Message 💌</h2>
                 <div class="emoji-big">🔤</div>
-                <p class="subtitle">Arrange these words to create a romantic sentence!</p>
+                <p class="subtitle">Select the words in the correct order to reveal the secret message!</p>
                 <div class="word-puzzle-container" id="puzzle-words"></div>
-                <p class="subtitle" style="margin-top: 30px;">Drop the words here in the right order:</p>
-                <div class="drop-zone" id="drop-zone"></div>
-                <button class="button" id="puzzle-next" onclick="nextTask(5)" disabled>Continue →</button>
+                <p class="subtitle" style="margin-top: 30px;">Your selected words:</p>
+                <div class="selected-words-display" id="selected-display">Click words above...</div>
+                <button class="button" id="puzzle-check" onclick="checkWordPuzzle()">Check Answer ✓</button>
             </div>
         </div>
 
@@ -764,21 +845,18 @@ body, .container {
             </div>
         </div>
 
-        <!-- Task 6: True/False Game -->
+        <!-- Task 6: Love Facts - CUSTOM QUESTIONS -->
         <div class="screen" id="task6">
             <div class="card">
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 95%"></div>
                 </div>
-                <h2 class="title">Love Facts ❤️</h2>
+                <h2 class="title">Test ❤️</h2>
                 <div class="emoji-big">🤔</div>
-                <p class="subtitle">Is this statement true or false?</p>
-                <div class="statement" id="statement"></div>
-                <div class="tf-buttons">
-                    <button class="button true-btn" onclick="checkTrueFalse(true)">TRUE ✓</button>
-                    <button class="button false-btn" onclick="checkTrueFalse(false)">FALSE ✗</button>
-                </div>
-                <div class="score-display">Score: <span id="tf-score">0</span>/3</div>
+                <p class="subtitle">Answer these questions about us!</p>
+                <div class="question-text" id="question-text"></div>
+                <div class="tf-buttons" id="options-container"></div>
+                <div class="score-display">Question: <span id="question-num">1</span>/4</div>
             </div>
         </div>
 
@@ -796,11 +874,22 @@ body, .container {
                 </p>
                 <div class="love-letter">
                     <p>My Dearest Lahari,</p>
-                    <p>From the moment I met you, my world became brighter. Your smile lights up my darkest days, and your laughter is my favorite melody.</p>
-                    <p>Every conversation with you feels like coming home. You understand me in ways I never thought possible, and you make me want to be a better person every single day.</p>
-                    <p>I created this journey for you because I wanted to show you how much you mean to me. Every challenge represents a moment we've shared, a laugh we've had, or a memory we've created together.</p>
-                    <p>So now I have to ask you the most important question...</p>
-                    <div class="signature">Forever Yours 💖</div>
+                    <p>Nv antey naku chana chana istem netho vundadam chana chana istem nv vunnav ani feeling entho baguntadi at the same time nv okavela lekaptey aah though kuda vastundhi🙃</p>
+                    <p>aah kshanam motham na mind tho oka yudhamey chestanu tega my mind is filled up with lot of thoughts</p>
+                    <p>first time manam videpoynappudu nenu ela vuntano future lo appudu nenu enduku badhapettadam ane alochinchi okavela nenu sarigga lekapotey ani appudu alochindi breakup cheppanu</p>
+                    <P>Present na situtaion chustuntey appudu anukanttey indhe ane chana badhavestundhe😔</P>
+                    <P>Kani ippudu nannu vadeley analenu endukantey chana addict twaraga stable position ravali ane roju though thoney modhal pedthanu</P>
+                    <p>okavela manam videpovalsi vastey adi navalley endukantey nenu sarigga vundanu kada job ledu ani inka settel avvaledu aah okka reason present manam videpovlasi vastey</p>
+                    <P>and malli nannu pattichukokapotey kuda vidpotham antav emo ninnu pattichukovali antey mundey nenu sarigga vundali kada buura ninda alochanaley</P>
+                    <P>neku problems vunnay anuko ne appulu ve naku na job de</P>
+                    <P>kani job leni abbai ke viluva vundadhu kada except manalne preminchey vallanunchi tappa nv inka ma parents</P>
+                    <p>nenu hyd rakapodaneke main reason meru em anukokapovachu kani deep ga naku nachadam ledu okavela nenu settle itey appudu vunna nenu mekada naku antha em anipiyyadu</p>
+                    <p>eppudu itey e burra ninda alochanalu vellipotayo aah day i will hug you very tightly and at the same time chana yedustha ne vodilo na tala petti</p>
+                    <p>love letter ga radham anukunna ededo rasesa 😣 nv naku <b>kavali</b>twarga nenu settle itey pelli cheskundam manam</p>
+                    <p>tarvtha inka better ga avvali nenu oka base kosam chustunna present</p>
+                    <p>now I have to ask you the most important question...</p>
+                    <b><i>So na hard days lo natho vuntava thoduga</i></b>
+                    <div class="signature">Forever Yours, Nani 💖</div>
                 </div>
                 <div style="margin-top: 40px;">
                     <button class="button yes-button" onclick="sayYes()">YES! I'll be your Valentine! 😍</button>
@@ -838,20 +927,22 @@ body, .container {
     </div>
 
     <script>
-        // Photo will be set dynamically
         const PHOTO_URL = "meandlahari.jpg";
 
-        
         let currentTask = 0;
         let quizAnswered = false;
         let memoryMatches = 0;
         let heartCount = 0;
-        let tfScore = 0;
-        let tfQuestion = 0;
+        let currentQuestion = 0;
         let selectedPiece = null;
         let puzzleComplete = 0;
 
-        // Quiz Questions
+        // Task 4 - Word Puzzle
+        let selectedWords = [];
+        const correctAnswer = ['I', 'LOVE', 'NANI'];
+        const wordsList = ['I', 'HATE', 'LOVE', 'NANI', 'HATE'];
+
+        // Task 1 - Quiz
         const quizQuestions = [
             {
                 question: "What is the most important thing in a relationship?",
@@ -860,52 +951,52 @@ body, .container {
             }
         ];
 
-        // True/False Statements
-        const tfStatements = [
-            { statement: "Love is about finding someone perfect.", answer: false },
-            { statement: "Small gestures of kindness matter more than grand romantic acts.", answer: true },
-            { statement: "True love means accepting someone for who they are.", answer: true }
+        // Task 6 - CUSTOM QUESTIONS
+        const customQuestions = [
+            {
+                question: "What color does Nani love?",
+                options: ["Blue", "Black", "Red", "White"],
+                correct: 0 // Blue
+            },
+            {
+                question: "Which month did we text first?",
+                options: ["May", "April", "June", "July"],
+                correct: 0 // May
+            },
+            {
+                question: "What time did we first text?",
+                options: ["11:30", "12:40", "12:47", "11:47"],
+                correct: 3 // 11:47
+            },
+            {
+                question: "Who loves the most?",
+                options: ["Nani", "Lahari"],
+                correct: 1, // Lahari
+                isFunny: true // Special handling
+            }
         ];
 
-        // Memory Game Emojis
-        const memoryEmojis = ['💕', '💖', '💗', '💘', '💝', '💞', '💓', '🌹'];
+        // Task 2 - Memory Game (Only 3 pairs)
+        const memoryEmojis = ['💕', '💖', '💗'];
         let memoryCards = [...memoryEmojis, ...memoryEmojis].sort(() => Math.random() - 0.5);
         let flippedCards = [];
         let matchedPairs = 0;
 
-        // Word Puzzle
-        const puzzleWords = ['You', 'make', 'my', 'heart', 'smile', 'every', 'day'];
-        let placedWords = [];
-
-        // Jigsaw Puzzle State
         let puzzleState = Array(16).fill(null);
         let availablePieces = Array.from({length: 16}, (_, i) => i).sort(() => Math.random() - 0.5);
 
         const bgMusic = document.getElementById("bg-music");
 
-function playMusic() {
-    bgMusic.volume = 0.2; // soft romantic volume
-    bgMusic.play().catch(() => {});
-}
+        function playMusic() {
+            bgMusic.volume = 0.2;
+            bgMusic.play().catch(() => {});
+        }
 
-
-
-
-
-//         document.addEventListener("touchmove", function (e) {
-//     if (document.getElementById("task3").classList.contains("active")) {
-//         e.preventDefault();
-//     }
-// }, { passive: false });
-
-
-        // Initialize
-       function startJourney() {
-    playMusic();
-    showScreen('task1');
-    initQuiz();
-}
-
+        function startJourney() {
+            playMusic();
+            showScreen('task1');
+            initQuiz();
+        }
 
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -918,7 +1009,7 @@ function playMusic() {
             if (taskNum === 3) initJigsawPuzzle();
             if (taskNum === 4) initWordPuzzle();
             if (taskNum === 5) initHearts();
-            if (taskNum === 6) initTrueFalse();
+            if (taskNum === 6) initCustomQuestions();
         }
 
         // Task 1: Quiz
@@ -946,7 +1037,7 @@ function playMusic() {
             }
         }
 
-        // Task 2: Memory Game
+        // Task 2: Memory Game - Only 3 pairs
         function initMemoryGame() {
             const grid = document.getElementById('memory-grid');
             grid.innerHTML = '';
@@ -969,7 +1060,7 @@ function playMusic() {
             flippedCards.push(card);
 
             if (flippedCards.length === 2) {
-                setTimeout(checkMatch, 800);
+                setTimeout(checkMatch, 600);
             }
         }
 
@@ -981,7 +1072,7 @@ function playMusic() {
                 matchedPairs++;
                 document.getElementById('matches').textContent = matchedPairs;
                 
-                if (matchedPairs === 8) {
+                if (matchedPairs === 3) { // Only 3 matches needed
                     document.getElementById('memory-next').disabled = false;
                 }
             } else {
@@ -1000,19 +1091,19 @@ function playMusic() {
             board.innerHTML = '';
             pieces.innerHTML = '';
 
-            // Create board slots
             for (let i = 0; i < 16; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'puzzle-slot';
                 slot.dataset.position = i;
-              slot.addEventListener("click", () => placePieceInSlot(i));
-slot.addEventListener("touchstart", () => placePieceInSlot(i), { passive: true });
-
+                slot.addEventListener("click", () => placePieceInSlot(i));
+                slot.addEventListener("touchstart", (e) => {
+                    e.preventDefault();
+                    placePieceInSlot(i);
+                }, { passive: false });
                 board.appendChild(slot);
             }
 
-            // Create puzzle pieces
-            availablePieces.forEach((pieceNum, index) => {
+            availablePieces.forEach((pieceNum) => {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
                 piece.dataset.piece = pieceNum;
@@ -1021,168 +1112,162 @@ slot.addEventListener("touchstart", () => placePieceInSlot(i), { passive: true }
                 piece.style.backgroundImage = `url(${PHOTO_URL})`;
                 piece.style.backgroundPosition = `${col * 33.333}% ${row * 33.333}%`;
                 piece.addEventListener("click", () => selectPuzzlePiece(pieceNum, piece));
-piece.addEventListener("touchstart", () => selectPuzzlePiece(pieceNum, piece), { passive: true });
-
+                piece.addEventListener("touchstart", (e) => {
+                    e.preventDefault();
+                    selectPuzzlePiece(pieceNum, piece);
+                }, { passive: false });
                 pieces.appendChild(piece);
             });
         }
 
         function selectPuzzlePiece(pieceNum, element) {
-    if (element.classList.contains('used')) return;
+            if (element.classList.contains('used')) return;
 
-    // clear previous selection
-    document.querySelectorAll('.puzzle-piece').forEach(p => {
-        p.style.border = '3px solid white';
-        p.style.transform = 'scale(1)';
-    });
+            document.querySelectorAll('.puzzle-piece').forEach(p => {
+                p.style.border = '3px solid white';
+                p.style.transform = 'scale(1)';
+            });
 
-    selectedPiece = { num: pieceNum, element: element };
+            selectedPiece = { num: pieceNum, element: element };
+            element.style.border = '5px solid #e91e63';
+            element.style.transform = 'scale(1.1)';
+        }
 
-    // highlight selected
-    element.style.border = '5px solid #e91e63';
-    element.style.transform = 'scale(1.1)';
-}
+        function placePieceInSlot(position) {
+            if (!selectedPiece) return;
 
+            const slot = document.querySelector(`.puzzle-slot[data-position="${position}"]`);
 
-        
-function placePieceInSlot(position) {
-    if (!selectedPiece) return;
+            if (puzzleState[position] !== null && slot.classList.contains('correct')) {
+                return;
+            }
 
-    const slot = document.querySelector(`.puzzle-slot[data-position="${position}"]`);
+            if (puzzleState[position] !== null) {
+                removePieceFromSlot(position);
+            }
 
-    // If slot already has a piece AND it is correct → do nothing
-    if (puzzleState[position] !== null && slot.classList.contains('correct')) {
-        return;
-    }
+            const pieceNum = selectedPiece.num;
+            puzzleState[position] = pieceNum;
+            const row = Math.floor(pieceNum / 4);
+            const col = pieceNum % 4;
 
-    // If slot already has a WRONG piece → remove it first
-    if (puzzleState[position] !== null) {
-        removePieceFromSlot(position);
-    }
+            slot.classList.add('filled');
+            slot.style.backgroundImage = `url(${PHOTO_URL})`;
+            slot.style.backgroundPosition = `${col * 33.333}% ${row * 33.333}%`;
 
-    const pieceNum = selectedPiece.num;
+            if (pieceNum === position) {
+                slot.classList.add('correct');
+            } else {
+                slot.classList.remove('correct');
+                slot.onclick = () => removePieceFromSlot(position);
+            }
 
-    // Place piece
-    puzzleState[position] = pieceNum;
-    const row = Math.floor(pieceNum / 4);
-    const col = pieceNum % 4;
+            selectedPiece.element.classList.add('used');
+            selectedPiece.element.style.border = '3px solid white';
+            selectedPiece = null;
 
-    slot.classList.add('filled');
-    slot.style.backgroundImage = `url(${PHOTO_URL})`;
-    slot.style.backgroundPosition = `${col * 33.333}% ${row * 33.333}%`;
+            puzzleComplete++;
+            document.getElementById('puzzle-progress').textContent = puzzleComplete;
 
-    // Correct or wrong
-    if (pieceNum === position) {
-        slot.classList.add('correct');
-    } else {
-        slot.classList.remove('correct');
-        slot.onclick = () => removePieceFromSlot(position);
-    }
+            if (puzzleComplete === 16) {
+                document.getElementById('jigsaw-next').disabled = false;
+            }
+        }
 
-    // Mark piece used
-    selectedPiece.element.classList.add('used');
-    selectedPiece.element.style.border = '3px solid white';
-    selectedPiece = null;
+        function removePieceFromSlot(position) {
+            const slot = document.querySelector(`.puzzle-slot[data-position="${position}"]`);
+            const pieceNum = puzzleState[position];
 
-    puzzleComplete++;
-    document.getElementById('puzzle-progress').textContent = puzzleComplete;
+            if (pieceNum === null) return;
 
-    if (puzzleComplete === 16) {
-        document.getElementById('jigsaw-next').disabled = false;
-    }
-}
+            const pieceEl = document.querySelector(`.puzzle-piece[data-piece="${pieceNum}"]`);
+            if (pieceEl) {
+                pieceEl.classList.remove('used');
+            }
 
+            slot.style.backgroundImage = '';
+            slot.style.backgroundPosition = '';
+            slot.classList.remove('filled', 'correct');
+            slot.onclick = () => placePieceInSlot(position);
 
+            puzzleState[position] = null;
+            puzzleComplete--;
 
-
-
-function removePieceFromSlot(position) {
-    const slot = document.querySelector(`.puzzle-slot[data-position="${position}"]`);
-    const pieceNum = puzzleState[position];
-
-    if (pieceNum === null) return;
-
-    // Unlock piece back in pieces area
-    const pieceEl = document.querySelector(`.puzzle-piece[data-piece="${pieceNum}"]`);
-    if (pieceEl) {
-        pieceEl.classList.remove('used');
-    }
-
-    // Reset slot
-    slot.style.backgroundImage = '';
-    slot.style.backgroundPosition = '';
-    slot.classList.remove('filled', 'correct');
-    slot.onclick = () => placePieceInSlot(position);
-
-    puzzleState[position] = null;
-    puzzleComplete--;
-
-    document.getElementById('puzzle-progress').textContent = puzzleComplete;
-}
-
+            document.getElementById('puzzle-progress').textContent = puzzleComplete;
+        }
 
         // Task 4: Word Puzzle
         function initWordPuzzle() {
             const container = document.getElementById('puzzle-words');
-            const shuffled = [...puzzleWords].sort(() => Math.random() - 0.5);
             container.innerHTML = '';
+            selectedWords = [];
             
-            shuffled.forEach((word, i) => {
+            wordsList.forEach((word) => {
                 const wordEl = document.createElement('div');
                 wordEl.className = 'puzzle-word';
                 wordEl.textContent = word;
                 wordEl.dataset.word = word;
-                wordEl.ondragstart = (e) => e.dataTransfer.setData('word', word);
-                wordEl.onclick = () => placeWord(word, wordEl);
+                wordEl.onclick = () => selectWord(word, wordEl);
                 container.appendChild(wordEl);
             });
 
-            const dropZone = document.getElementById('drop-zone');
-            dropZone.innerHTML = '';
-            dropZone.ondragover = (e) => e.preventDefault();
-            dropZone.ondrop = (e) => {
-                e.preventDefault();
-                const word = e.dataTransfer.getData('word');
-                placeWord(word);
-            };
+            updateSelectedDisplay();
         }
 
-        function placeWord(word, element) {
-            if (placedWords.includes(word)) return;
-            
-            const dropZone = document.getElementById('drop-zone');
-            const wordEl = document.createElement('div');
-            wordEl.className = 'puzzle-word';
-            wordEl.textContent = word;
-            wordEl.onclick = () => removeWord(word, wordEl);
-            dropZone.appendChild(wordEl);
-            
-            placedWords.push(word);
-            
-            if (element) {
-                element.classList.add('placed');
+        function selectWord(word, element) {
+            if (element.classList.contains('placed')) {
+                element.classList.remove('placed', 'selected');
+                selectedWords = selectedWords.filter(w => w !== word);
             } else {
-                document.querySelectorAll('.puzzle-word').forEach(el => {
-                    if (el.dataset.word === word && !el.classList.contains('placed')) {
-                        el.classList.add('placed');
-                    }
-                });
+                element.classList.add('selected');
+                setTimeout(() => {
+                    element.classList.remove('selected');
+                    element.classList.add('placed');
+                }, 300);
+                selectedWords.push(word);
             }
             
-            if (placedWords.join(' ') === puzzleWords.join(' ')) {
-                document.getElementById('puzzle-next').disabled = false;
+            updateSelectedDisplay();
+        }
+
+        function updateSelectedDisplay() {
+            const display = document.getElementById('selected-display');
+            if (selectedWords.length === 0) {
+                display.textContent = 'Click words above...';
+            } else {
+                display.textContent = selectedWords.join(' ');
             }
         }
 
-        function removeWord(word, element) {
-            element.remove();
-            placedWords = placedWords.filter(w => w !== word);
+        function checkWordPuzzle() {
+            const userAnswer = selectedWords.join(' ');
+            const correctAnswerStr = correctAnswer.join(' ');
+            
+            if (userAnswer === correctAnswerStr) {
+                nextTask(5);
+            } else {
+                showError();
+                setTimeout(() => {
+                    hideError();
+                    resetWordPuzzle();
+                }, 2000);
+            }
+        }
+
+        function resetWordPuzzle() {
+            selectedWords = [];
             document.querySelectorAll('.puzzle-word').forEach(el => {
-                if (el.dataset.word === word) {
-                    el.classList.remove('placed');
-                }
+                el.classList.remove('placed', 'selected');
             });
-            document.getElementById('puzzle-next').disabled = true;
+            updateSelectedDisplay();
+        }
+
+        function showError() {
+            document.getElementById('errorOverlay').classList.add('active');
+        }
+
+        function hideError() {
+            document.getElementById('errorOverlay').classList.remove('active');
         }
 
         // Task 5: Hearts
@@ -1210,31 +1295,78 @@ function removePieceFromSlot(position) {
             }
         }
 
-        // Task 6: True/False
-        function initTrueFalse() {
-            showTFQuestion();
+        // Task 6: Custom Questions
+        function initCustomQuestions() {
+            showCustomQuestion();
         }
 
-        function showTFQuestion() {
-            if (tfQuestion < tfStatements.length) {
-                document.getElementById('statement').textContent = tfStatements[tfQuestion].statement;
+        function showCustomQuestion() {
+            if (currentQuestion < customQuestions.length) {
+                const q = customQuestions[currentQuestion];
+                document.getElementById('question-text').textContent = q.question;
+                document.getElementById('question-num').textContent = currentQuestion + 1;
+                
+                const container = document.getElementById('options-container');
+                container.innerHTML = '';
+                
+                q.options.forEach((option, index) => {
+                    const optionEl = document.createElement('div');
+                    optionEl.className = 'tf-option';
+                    optionEl.textContent = option;
+                    optionEl.onclick = () => checkCustomAnswer(index);
+                    container.appendChild(optionEl);
+                });
             }
         }
 
-        function checkTrueFalse(answer) {
-            if (tfQuestion >= tfStatements.length) return;
+        function checkCustomAnswer(selectedIndex) {
+            const q = customQuestions[currentQuestion];
+            const options = document.querySelectorAll('.tf-option');
             
-            if (answer === tfStatements[tfQuestion].answer) {
-                tfScore++;
-                document.getElementById('tf-score').textContent = tfScore;
-            }
+            // Disable all options
+            options.forEach(opt => opt.style.pointerEvents = 'none');
             
-            tfQuestion++;
-            
-            if (tfQuestion < tfStatements.length) {
-                setTimeout(showTFQuestion, 500);
+            if (q.isFunny && selectedIndex == q.correct) {
+                // Show wrong animation first
+                options[selectedIndex].classList.add('wrong');
+                
+                // Then show funny overlay
+                setTimeout(() => {
+                    document.getElementById('funnyOverlay').classList.add('active');
+                    
+                    // After 3 seconds, hide overlay and move to next
+                    setTimeout(() => {
+                        document.getElementById('funnyOverlay').classList.remove('active');
+                        currentQuestion++;
+                        if (currentQuestion < customQuestions.length) {
+                            showCustomQuestion();
+                        } else {
+                            setTimeout(() => showScreen('proposal'), 500);
+                        }
+                    }, 3000);
+                }, 500);
+            } else if (selectedIndex === q.correct) {
+                // Correct answer
+                options[selectedIndex].classList.add('correct');
+                
+                setTimeout(() => {
+                    currentQuestion++;
+                    if (currentQuestion < customQuestions.length) {
+                        showCustomQuestion();
+                    } else {
+                        setTimeout(() => showScreen('proposal'), 500);
+                    }
+                }, 1000);
             } else {
-                setTimeout(() => showScreen('proposal'), 1000);
+                // Wrong answer
+                options[selectedIndex].classList.add('wrong');
+                
+                setTimeout(() => {
+                    options.forEach(opt => {
+                        opt.style.pointerEvents = 'auto';
+                        opt.classList.remove('wrong');
+                    });
+                }, 1000);
             }
         }
 
@@ -1252,7 +1384,6 @@ function removePieceFromSlot(position) {
             showScreen('proposal');
         }
 
-        // Confetti
         function createConfetti() {
             const colors = ['#e91e63', '#ff4081', '#f50057', '#c51162', '#ff80ab', '#4caf50', '#ffeb3b', '#ff9800'];
             for (let i = 0; i < 100; i++) {
@@ -1266,7 +1397,6 @@ function removePieceFromSlot(position) {
             }
         }
 
-        // Floating hearts
         function createFloatingHearts() {
             const container = document.getElementById('heartContainer');
             const hearts = ['❤️', '💕', '💖', '💗', '💝', '💘', '💓', '💞'];
@@ -1287,19 +1417,16 @@ function removePieceFromSlot(position) {
 
         createFloatingHearts();
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const reg = await navigator.serviceWorker.register(
-        './service-worker.js',
-        { scope: './' }   // 🔥 THIS IS THE KEY
-      );
-      console.log('SW registered with scope:', reg.scope);
-    } catch (e) {
-      console.error('SW registration failed:', e);
-    }
-  });
-}
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const reg = await navigator.serviceWorker.register('./service-worker.js', { scope: './' });
+                    console.log('SW registered with scope:', reg.scope);
+                } catch (e) {
+                    console.error('SW registration failed:', e);
+                }
+            });
+        }
     </script>
 </body>
 </html>
