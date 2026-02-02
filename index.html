@@ -1,889 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Journey For You 💕</title>
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#e91e63">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Special Journey 💕</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
-    <style>
-   /* ===== RESET ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Playfair Display',serif;
+  background:linear-gradient(135deg,#ffeef8,#ffd4e8);
+  overflow-x:hidden;
 }
 
-/* ===== BODY ===== */
-body {
-    font-family: 'Crimson Text', serif;
-    background: linear-gradient(135deg, #ffeef8 0%, #ffe3f1 25%, #ffd4e8 50%, #ffc7e0 75%, #ffb8d9 100%);
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:16px;
 }
 
-/* ===== FLOATING HEARTS ===== */
-.heart-container {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+  text-align:center;
 }
 
-.floating-heart {
-    position: absolute;
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 8s infinite ease-in;
+.title{
+  font-family:'Dancing Script',cursive;
+  font-size:36px;
+  color:#c2185b;
 }
 
-@keyframes floatUp {
-    0% { transform: translateY(100vh); opacity: 0; }
-    10% { opacity: 0.8; }
-    90% { opacity: 0.8; }
-    100% { transform: translateY(-100vh); opacity: 0; }
+.subtitle{
+  font-size:18px;
+  margin:10px 0;
 }
 
-/* ===== LAYOUT ===== */
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 10;
+.button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  background:#e91e63;
+  color:#fff;
 }
 
-.screen {
-    display: none;
-    min-height: 100vh;
-    padding-top: 60px;
-    text-align: center;
-    animation: fadeIn 0.8s ease-in;
+/* ===== TASK 2 MEMORY (6 CARDS) ===== */
+.memory-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:15px;
 }
 
-.screen.active {
-    display: block;
+.memory-card{
+  aspect-ratio:1;
+  background:#ff80ab;
+  border-radius:12px;
+  font-size:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* ===== CARD ===== */
-.card {
-    background: rgba(255,255,255,0.95);
-    border-radius: 30px;
-    padding: 40px 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    border: 3px solid rgba(233,30,99,0.2);
+/* ===== TASK 3 PUZZLE ===== */
+.puzzle-board{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+  width:100%;
+  aspect-ratio:1;
+  margin-top:15px;
 }
 
-/* ===== TEXT ===== */
-.title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 56px;
-    color: #c2185b;
-    margin-bottom: 20px;
+.slot{
+  background:#ffc7e0;
+  border-radius:8px;
 }
 
-.subtitle {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    color: #880e4f;
-    margin-bottom: 20px;
-    line-height: 1.6;
+.slot.filled{
+  background-size:300% 300%;
+  background-repeat:no-repeat;
 }
 
-.emoji-big {
-    font-size: 70px;
-    margin: 15px 0;
+/* pieces */
+.pieces{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:15px;
 }
 
-/* ===== BUTTON ===== */
-.button {
-    background: linear-gradient(135deg, #e91e63, #c2185b);
-    color: #fff;
-    border: none;
-    padding: 16px 40px;
-    font-size: 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    margin: 10px;
+.piece{
+  aspect-ratio:1;
+  background-size:300% 300%;
+  border-radius:8px;
+  border:2px solid #fff;
 }
+.piece.used{opacity:.3}
 
-.button:disabled {
-    opacity: 0.5;
-}
-
-/* ===== PROGRESS ===== */
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 25px;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #e91e63, #f50057);
-}
-
-/* ===== MEMORY GAME ===== */
-.memory-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    max-width: 420px;
-    margin: 20px auto;
-}
-
-.memory-card {
-    aspect-ratio: 1 / 1;
-    background: linear-gradient(135deg, #ff80ab, #ff4081);
-    border-radius: 15px;
-    font-size: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ===== PUZZLE BOARD ===== */
-.puzzle-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: 95vw;
-    max-width: 420px;
-    aspect-ratio: 1 / 1;
-    margin: 20px auto;
-    gap: 3px;
-    background: #e91e63;
-    padding: 3px;
-    border-radius: 15px;
-}
-
-/* ===== PUZZLE SLOT ===== */
-.puzzle-slot {
-    aspect-ratio: 1 / 1;
-    background: #ffc7e0;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.puzzle-slot.filled,
-.puzzle-piece {
-    background-size: 400% 400%;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.puzzle-slot.correct {
-    box-shadow: inset 0 0 0 3px #4caf50;
-}
-
-/* ===== PUZZLE PIECES ===== */
-.puzzle-pieces-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    max-width: 420px;
-    margin: 15px auto;
-    max-height: 45vh;
-    overflow-y: auto;
-    padding-bottom: 20px;
-}
-
-.puzzle-piece {
-    aspect-ratio: 1 / 1;
-    border-radius: 10px;
-    border: 3px solid #fff;
-}
-
-.puzzle-piece.used {
-    opacity: 0.3;
-    pointer-events: none;
-}
-
-/* ===== TOUCH FEEDBACK ===== */
-.puzzle-piece:active,
-.puzzle-slot:active {
-    transform: scale(0.95);
-}
-
-/* ===== MOBILE ===== */
-@media (max-width: 600px) {
-
-    .card {
-        padding: 25px 15px;
-        border-radius: 20px;
-    }
-
-    .title {
-        font-size: 36px;
-    }
-
-    .subtitle {
-        font-size: 18px;
-    }
-
-    .button {
-        width: 100%;
-        font-size: 18px;
-        padding: 14px;
-    }
-
-    #task3 {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-    </style>
+/* SAFE MOBILE SCROLL */
+.screen{display:none}
+.screen.active{display:block}
+</style>
 </head>
+
 <body>
-    <audio id="bg-music" loop>
-    <source src="gehra.mp3" type="audio/mpeg">
-</audio>
-    <div class="heart-container" id="heartContainer"></div>
 
-    <div class="container">
-        <!-- Welcome Screen -->
-        <div class="screen active" id="welcome">
-            <div class="card">
-                <h1 class="title">A Special Journey 💕</h1>
-                <div class="emoji-big">🎁</div>
-                <p class="subtitle">
-                    I've prepared something special for you, Lahari...<br>
-                    Complete these fun challenges to unlock<br>
-                    a very important question! ✨
-                </p>
-                <button class="button" onclick="startJourney()">Let's Begin! 🌹</button>
-            </div>
-        </div>
+<div class="container">
 
-        <!-- Task 1: Love Quiz -->
-        <div class="screen" id="task1">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 16%"></div>
-                </div>
-                <h2 class="title">Love Quiz 💝</h2>
-                <div class="emoji-big">📝</div>
-                <p class="subtitle">How well do you know about love?</p>
-                <div id="quiz-content"></div>
-                <button class="button" id="quiz-next" onclick="nextTask(2)" disabled>Continue →</button>
-            </div>
-        </div>
+<!-- WELCOME -->
+<div class="screen active" id="welcome">
+  <div class="card">
+    <h1 class="title">A Special Journey 💕</h1>
+    <p class="subtitle">I made this just for you</p>
+    <button class="button" onclick="go('task2')">Start</button>
+  </div>
+</div>
 
-        <!-- Task 2: Memory Game -->
-        <div class="screen" id="task2">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 33%"></div>
-                </div>
-                <h2 class="title">Memory Match 🧠</h2>
-                <div class="emoji-big">💖</div>
-                <p class="subtitle">Find all the matching pairs of love emojis!</p>
-                <div class="score-display">Matches: <span id="matches">0</span>/8</div>
-                <div class="memory-grid" id="memory-grid"></div>
-                <button class="button" id="memory-next" onclick="nextTask(3)" disabled>Continue →</button>
-            </div>
-        </div>
+<!-- TASK 2 MEMORY (SIMPLE) -->
+<div class="screen" id="task2">
+  <div class="card">
+    <h2 class="title">Memory 💖</h2>
+    <p class="subtitle">Match all pairs</p>
+    <div class="memory-grid" id="memory"></div>
+    <button class="button" id="mNext" disabled onclick="go('task3')">Next</button>
+  </div>
+</div>
 
-        <!-- Task 3: Photo Jigsaw Puzzle -->
-        <div class="screen" id="task3">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 50%"></div>
-                </div>
-                <h2 class="title">Our Special Moment 📸</h2>
-                <div class="emoji-big">🧩</div>
-                <p class="subtitle">Put our photo back together! Click pieces below and then click where they go!</p>
-                <div class="score-display">Pieces Placed: <span id="puzzle-progress">0</span>/16</div>
-                <div class="puzzle-board" id="puzzle-board"></div>
-                <p class="subtitle" style="margin-top: 20px; font-size: 18px;">Click a piece below to select it:</p>
-                <p class="subtitle" style="font-size:16px;">Tip: Click a wrongly placed piece to remove it 💡</p>
-                <div class="puzzle-pieces-container" id="puzzle-pieces"></div>
-                <button class="button" id="jigsaw-next" onclick="nextTask(4)" disabled>Continue →</button>
-            </div>
-        </div>
+<!-- TASK 3 PUZZLE -->
+<div class="screen" id="task3">
+  <div class="card">
+    <h2 class="title">Our Photo 🧩</h2>
+    <p class="subtitle">Tap piece → tap slot</p>
+    <div class="puzzle-board" id="board"></div>
+    <div class="pieces" id="pieces"></div>
+    <button class="button" id="pNext" disabled onclick="go('final')">Finish</button>
+  </div>
+</div>
 
-        <!-- Task 4: Word Puzzle -->
-        <div class="screen" id="task4">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 66%"></div>
-                </div>
-                <h2 class="title">Love Message 💌</h2>
-                <div class="emoji-big">🔤</div>
-                <p class="subtitle">Arrange these words to create a romantic sentence!</p>
-                <div class="word-puzzle-container" id="puzzle-words"></div>
-                <p class="subtitle" style="margin-top: 30px;">Drop the words here in the right order:</p>
-                <div class="drop-zone" id="drop-zone"></div>
-                <button class="button" id="puzzle-next" onclick="nextTask(5)" disabled>Continue →</button>
-            </div>
-        </div>
+<!-- FINAL -->
+<div class="screen" id="final">
+  <div class="card">
+    <h1 class="title">Will you be my Valentine? 💕</h1>
+    <p class="subtitle">You mean everything to me</p>
+  </div>
+</div>
 
-        <!-- Task 5: Love Calculator -->
-        <div class="screen" id="task5">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 83%"></div>
-                </div>
-                <h2 class="title">Love Meter 💕</h2>
-                <div class="emoji-big">💘</div>
-                <p class="subtitle">Click on 5 hearts to fill the love meter!</p>
-                <div class="hearts-container" id="hearts-container"></div>
-                <div class="score-display">Hearts: <span id="heart-count">0</span>/5</div>
-                <button class="button" id="hearts-next" onclick="nextTask(6)" disabled>Continue →</button>
-            </div>
-        </div>
+</div>
 
-        <!-- Task 6: True/False Game -->
-        <div class="screen" id="task6">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 95%"></div>
-                </div>
-                <h2 class="title">Love Facts ❤️</h2>
-                <div class="emoji-big">🤔</div>
-                <p class="subtitle">Is this statement true or false?</p>
-                <div class="statement" id="statement"></div>
-                <div class="tf-buttons">
-                    <button class="button true-btn" onclick="checkTrueFalse(true)">TRUE ✓</button>
-                    <button class="button false-btn" onclick="checkTrueFalse(false)">FALSE ✗</button>
-                </div>
-                <div class="score-display">Score: <span id="tf-score">0</span>/3</div>
-            </div>
-        </div>
-
-        <!-- Final Proposal -->
-        <div class="screen" id="proposal">
-            <div class="card">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 100%"></div>
-                </div>
-                <h1 class="proposal-title">Will You Be My Valentine? 💕</h1>
-                <div class="emoji-big">🌹💝🌹</div>
-                <p class="subtitle">
-                    You completed all the challenges!<br>
-                    Now for the most important question...
-                </p>
-                <div class="love-letter">
-                    <p>My Dearest Lahari,</p>
-                    <p>From the moment I met you, my world became brighter. Your smile lights up my darkest days, and your laughter is my favorite melody.</p>
-                    <p>Every conversation with you feels like coming home. You understand me in ways I never thought possible, and you make me want to be a better person every single day.</p>
-                    <p>I created this journey for you because I wanted to show you how much you mean to me. Every challenge represents a moment we've shared, a laugh we've had, or a memory we've created together.</p>
-                    <p>So now I have to ask you the most important question...</p>
-                    <div class="signature">Forever Yours 💖</div>
-                </div>
-                <div style="margin-top: 40px;">
-                    <button class="button yes-button" onclick="sayYes()">YES! I'll be your Valentine! 😍</button>
-                    <button class="button no-button" onclick="sayNo()">I need to think... 🤔</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Celebration -->
-        <div class="screen" id="celebration">
-            <div class="card" style="border-color: #4caf50;">
-                <h1 class="title" style="color: #4caf50; font-size: 72px;">🎉 YES! 🎉</h1>
-                <div class="emoji-big">🥰💕✨🌹💖🎊</div>
-                <p class="subtitle" style="font-size: 28px;">
-                    You just made me the happiest person alive!<br>
-                    Thank you for being my Valentine! 💝<br><br>
-                    I can't wait to create more beautiful memories with you!
-                </p>
-                <div class="emoji-big">❤️</div>
-            </div>
-        </div>
-
-        <!-- Reconsider -->
-        <div class="screen" id="reconsider">
-            <div class="card">
-                <div class="emoji-big">🥺</div>
-                <h2 class="title">Please Reconsider? 💔</h2>
-                <p class="subtitle">
-                    My heart is waiting for your answer...<br>
-                    I promise to make every day special! 🌟
-                </p>
-                <button class="button" onclick="backToProposal()">Let Me Think Again 💭</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Photo will be set dynamically
-        const PHOTO_URL = "meandlahari.jpg";
-
-        
-        let currentTask = 0;
-        let quizAnswered = false;
-        let memoryMatches = 0;
-        let heartCount = 0;
-        let tfScore = 0;
-        let tfQuestion = 0;
-        let selectedPiece = null;
-        let puzzleComplete = 0;
-
-        // Quiz Questions
-        const quizQuestions = [
-            {
-                question: "What is the most important thing in a relationship?",
-                options: ["Money", "Trust and Communication", "Good looks", "Having the same hobbies"],
-                correct: 1
-            }
-        ];
-
-        // True/False Statements
-        const tfStatements = [
-            { statement: "Love is about finding someone perfect.", answer: false },
-            { statement: "Small gestures of kindness matter more than grand romantic acts.", answer: true },
-            { statement: "True love means accepting someone for who they are.", answer: true }
-        ];
-
-        // Memory Game Emojis
-        const memoryEmojis = ['💕', '💖', '💗', '💘', '💝', '💞', '💓', '🌹'];
-        let memoryCards = [...memoryEmojis, ...memoryEmojis].sort(() => Math.random() - 0.5);
-        let flippedCards = [];
-        let matchedPairs = 0;
-
-        // Word Puzzle
-        const puzzleWords = ['You', 'make', 'my', 'heart', 'smile', 'every', 'day'];
-        let placedWords = [];
-
-        // Jigsaw Puzzle State
-        let puzzleState = Array(16).fill(null);
-        let availablePieces = Array.from({length: 16}, (_, i) => i).sort(() => Math.random() - 0.5);
-
-        const bgMusic = document.getElementById("bg-music");
-
-function playMusic() {
-    bgMusic.volume = 0.2; // soft romantic volume
-    bgMusic.play().catch(() => {});
+<script>
+/* SCREEN NAV */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'))
+  document.getElementById(id).classList.add('active')
 }
 
+/* ===== TASK 2 MEMORY ===== */
+const emojis=['❤️','💖','💘']
+let cards=[...emojis,...emojis].sort(()=>Math.random()-0.5)
+let open=[], matched=0
 
+const mem=document.getElementById('memory')
+cards.forEach(e=>{
+  const c=document.createElement('div')
+  c.className='memory-card'
+  c.textContent='❓'
+  c.onclick=()=>{
+    if(c.textContent!=='❓'||open.length==2)return
+    c.textContent=e
+    open.push(c)
+    if(open.length==2){
+      setTimeout(()=>{
+        if(open[0].textContent===open[1].textContent){
+          matched++
+          if(matched==3) document.getElementById('mNext').disabled=false
+        }else{
+          open.forEach(x=>x.textContent='❓')
+        }
+        open=[]
+      },600)
+    }
+  }
+  mem.appendChild(c)
+})
 
+/* ===== TASK 3 PUZZLE (3x3 SIMPLE) ===== */
+const img='meandlahari.jpg'
+let selected=null, done=0
 
+const board=document.getElementById('board')
+const pieces=document.getElementById('pieces')
 
-//         document.addEventListener("touchmove", function (e) {
-//     if (document.getElementById("task3").classList.contains("active")) {
-//         e.preventDefault();
-//     }
-// }, { passive: false });
+for(let i=0;i<9;i++){
+  const s=document.createElement('div')
+  s.className='slot'
+  s.onclick=()=>{
+    if(!selected)return
+    s.style.backgroundImage=`url(${img})`
+    s.style.backgroundPosition=`${(selected%3)*50}% ${Math.floor(selected/3)*50}%`
+    s.classList.add('filled')
+    selectedEl.classList.add('used')
+    selected=null
+    done++
+    if(done==9) document.getElementById('pNext').disabled=false
+  }
+  board.appendChild(s)
 
-
-        // Initialize
-       function startJourney() {
-    playMusic();
-    showScreen('task1');
-    initQuiz();
+  const p=document.createElement('div')
+  p.className='piece'
+  p.style.backgroundImage=`url(${img})`
+  p.style.backgroundPosition=`${(i%3)*50}% ${Math.floor(i/3)*50}%`
+  p.onclick=()=>{selected=i;selectedEl=p}
+  pieces.appendChild(p)
 }
+</script>
 
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function nextTask(taskNum) {
-            showScreen('task' + taskNum);
-            if (taskNum === 2) initMemoryGame();
-            if (taskNum === 3) initJigsawPuzzle();
-            if (taskNum === 4) initWordPuzzle();
-            if (taskNum === 5) initHearts();
-            if (taskNum === 6) initTrueFalse();
-        }
-
-        // Task 1: Quiz
-        function initQuiz() {
-            const quiz = quizQuestions[0];
-            let html = `<p class="subtitle" style="margin: 20px 0;">${quiz.question}</p>`;
-            quiz.options.forEach((option, i) => {
-                html += `<button class="quiz-option" onclick="selectQuiz(${i})">${option}</button>`;
-            });
-            document.getElementById('quiz-content').innerHTML = html;
-        }
-
-        function selectQuiz(index) {
-            if (quizAnswered) return;
-            const quiz = quizQuestions[0];
-            const options = document.querySelectorAll('.quiz-option');
-            
-            if (index === quiz.correct) {
-                options[index].classList.add('correct');
-                document.getElementById('quiz-next').disabled = false;
-                quizAnswered = true;
-            } else {
-                options[index].classList.add('wrong');
-                setTimeout(() => options[index].classList.remove('wrong'), 1000);
-            }
-        }
-
-        // Task 2: Memory Game
-        function initMemoryGame() {
-            const grid = document.getElementById('memory-grid');
-            grid.innerHTML = '';
-            memoryCards.forEach((emoji, index) => {
-                const card = document.createElement('div');
-                card.className = 'memory-card';
-                card.dataset.emoji = emoji;
-                card.dataset.index = index;
-                card.innerHTML = '❓';
-                card.onclick = () => flipCard(card);
-                grid.appendChild(card);
-            });
-        }
-
-        function flipCard(card) {
-            if (flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
-            
-            card.classList.add('flipped');
-            card.innerHTML = card.dataset.emoji;
-            flippedCards.push(card);
-
-            if (flippedCards.length === 2) {
-                setTimeout(checkMatch, 800);
-            }
-        }
-
-        function checkMatch() {
-            const [card1, card2] = flippedCards;
-            if (card1.dataset.emoji === card2.dataset.emoji) {
-                card1.classList.add('matched');
-                card2.classList.add('matched');
-                matchedPairs++;
-                document.getElementById('matches').textContent = matchedPairs;
-                
-                if (matchedPairs === 8) {
-                    document.getElementById('memory-next').disabled = false;
-                }
-            } else {
-                card1.classList.remove('flipped');
-                card2.classList.remove('flipped');
-                card1.innerHTML = '❓';
-                card2.innerHTML = '❓';
-            }
-            flippedCards = [];
-        }
-
-        // Task 3: Jigsaw Puzzle
-        function initJigsawPuzzle() {
-            const board = document.getElementById('puzzle-board');
-            const pieces = document.getElementById('puzzle-pieces');
-            board.innerHTML = '';
-            pieces.innerHTML = '';
-
-            // Create board slots
-            for (let i = 0; i < 16; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'puzzle-slot';
-                slot.dataset.position = i;
-              slot.addEventListener("click", () => placePieceInSlot(i));
-slot.addEventListener("touchstart", () => placePieceInSlot(i), { passive: true });
-
-                board.appendChild(slot);
-            }
-
-            // Create puzzle pieces
-            availablePieces.forEach((pieceNum, index) => {
-                const piece = document.createElement('div');
-                piece.className = 'puzzle-piece';
-                piece.dataset.piece = pieceNum;
-                const row = Math.floor(pieceNum / 4);
-                const col = pieceNum % 4;
-                piece.style.backgroundImage = `url(${PHOTO_URL})`;
-                piece.style.backgroundPosition = `${col * 33.333}% ${row * 33.333}%`;
-                piece.addEventListener("click", () => selectPuzzlePiece(pieceNum, piece));
-piece.addEventListener("touchstart", () => selectPuzzlePiece(pieceNum, piece), { passive: true });
-
-                pieces.appendChild(piece);
-            });
-        }
-
-        function selectPuzzlePiece(pieceNum, element) {
-    if (element.classList.contains('used')) return;
-
-    // clear previous selection
-    document.querySelectorAll('.puzzle-piece').forEach(p => {
-        p.style.border = '3px solid white';
-        p.style.transform = 'scale(1)';
-    });
-
-    selectedPiece = { num: pieceNum, element: element };
-
-    // highlight selected
-    element.style.border = '5px solid #e91e63';
-    element.style.transform = 'scale(1.1)';
-}
-
-
-        
-function placePieceInSlot(position) {
-    if (!selectedPiece) return;
-
-    const slot = document.querySelector(`.puzzle-slot[data-position="${position}"]`);
-
-    // If slot already has a piece AND it is correct → do nothing
-    if (puzzleState[position] !== null && slot.classList.contains('correct')) {
-        return;
-    }
-
-    // If slot already has a WRONG piece → remove it first
-    if (puzzleState[position] !== null) {
-        removePieceFromSlot(position);
-    }
-
-    const pieceNum = selectedPiece.num;
-
-    // Place piece
-    puzzleState[position] = pieceNum;
-    const row = Math.floor(pieceNum / 4);
-    const col = pieceNum % 4;
-
-    slot.classList.add('filled');
-    slot.style.backgroundImage = `url(${PHOTO_URL})`;
-    slot.style.backgroundPosition = `${col * 33.333}% ${row * 33.333}%`;
-
-    // Correct or wrong
-    if (pieceNum === position) {
-        slot.classList.add('correct');
-    } else {
-        slot.classList.remove('correct');
-        slot.onclick = () => removePieceFromSlot(position);
-    }
-
-    // Mark piece used
-    selectedPiece.element.classList.add('used');
-    selectedPiece.element.style.border = '3px solid white';
-    selectedPiece = null;
-
-    puzzleComplete++;
-    document.getElementById('puzzle-progress').textContent = puzzleComplete;
-
-    if (puzzleComplete === 16) {
-        document.getElementById('jigsaw-next').disabled = false;
-    }
-}
-
-
-
-
-
-function removePieceFromSlot(position) {
-    const slot = document.querySelector(`.puzzle-slot[data-position="${position}"]`);
-    const pieceNum = puzzleState[position];
-
-    if (pieceNum === null) return;
-
-    // Unlock piece back in pieces area
-    const pieceEl = document.querySelector(`.puzzle-piece[data-piece="${pieceNum}"]`);
-    if (pieceEl) {
-        pieceEl.classList.remove('used');
-    }
-
-    // Reset slot
-    slot.style.backgroundImage = '';
-    slot.style.backgroundPosition = '';
-    slot.classList.remove('filled', 'correct');
-    slot.onclick = () => placePieceInSlot(position);
-
-    puzzleState[position] = null;
-    puzzleComplete--;
-
-    document.getElementById('puzzle-progress').textContent = puzzleComplete;
-}
-
-
-        // Task 4: Word Puzzle
-        function initWordPuzzle() {
-            const container = document.getElementById('puzzle-words');
-            const shuffled = [...puzzleWords].sort(() => Math.random() - 0.5);
-            container.innerHTML = '';
-            
-            shuffled.forEach((word, i) => {
-                const wordEl = document.createElement('div');
-                wordEl.className = 'puzzle-word';
-                wordEl.textContent = word;
-                wordEl.dataset.word = word;
-                wordEl.ondragstart = (e) => e.dataTransfer.setData('word', word);
-                wordEl.onclick = () => placeWord(word, wordEl);
-                container.appendChild(wordEl);
-            });
-
-            const dropZone = document.getElementById('drop-zone');
-            dropZone.innerHTML = '';
-            dropZone.ondragover = (e) => e.preventDefault();
-            dropZone.ondrop = (e) => {
-                e.preventDefault();
-                const word = e.dataTransfer.getData('word');
-                placeWord(word);
-            };
-        }
-
-        function placeWord(word, element) {
-            if (placedWords.includes(word)) return;
-            
-            const dropZone = document.getElementById('drop-zone');
-            const wordEl = document.createElement('div');
-            wordEl.className = 'puzzle-word';
-            wordEl.textContent = word;
-            wordEl.onclick = () => removeWord(word, wordEl);
-            dropZone.appendChild(wordEl);
-            
-            placedWords.push(word);
-            
-            if (element) {
-                element.classList.add('placed');
-            } else {
-                document.querySelectorAll('.puzzle-word').forEach(el => {
-                    if (el.dataset.word === word && !el.classList.contains('placed')) {
-                        el.classList.add('placed');
-                    }
-                });
-            }
-            
-            if (placedWords.join(' ') === puzzleWords.join(' ')) {
-                document.getElementById('puzzle-next').disabled = false;
-            }
-        }
-
-        function removeWord(word, element) {
-            element.remove();
-            placedWords = placedWords.filter(w => w !== word);
-            document.querySelectorAll('.puzzle-word').forEach(el => {
-                if (el.dataset.word === word) {
-                    el.classList.remove('placed');
-                }
-            });
-            document.getElementById('puzzle-next').disabled = true;
-        }
-
-        // Task 5: Hearts
-        function initHearts() {
-            const container = document.getElementById('hearts-container');
-            container.innerHTML = '';
-            for (let i = 0; i < 10; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart-click';
-                heart.innerHTML = '🤍';
-                heart.onclick = () => clickHeart(heart);
-                container.appendChild(heart);
-            }
-        }
-
-        function clickHeart(heart) {
-            if (heart.classList.contains('active') || heartCount >= 5) return;
-            heart.classList.add('active');
-            heart.innerHTML = '❤️';
-            heartCount++;
-            document.getElementById('heart-count').textContent = heartCount;
-            
-            if (heartCount === 5) {
-                document.getElementById('hearts-next').disabled = false;
-            }
-        }
-
-        // Task 6: True/False
-        function initTrueFalse() {
-            showTFQuestion();
-        }
-
-        function showTFQuestion() {
-            if (tfQuestion < tfStatements.length) {
-                document.getElementById('statement').textContent = tfStatements[tfQuestion].statement;
-            }
-        }
-
-        function checkTrueFalse(answer) {
-            if (tfQuestion >= tfStatements.length) return;
-            
-            if (answer === tfStatements[tfQuestion].answer) {
-                tfScore++;
-                document.getElementById('tf-score').textContent = tfScore;
-            }
-            
-            tfQuestion++;
-            
-            if (tfQuestion < tfStatements.length) {
-                setTimeout(showTFQuestion, 500);
-            } else {
-                setTimeout(() => showScreen('proposal'), 1000);
-            }
-        }
-
-        // Proposal
-        function sayYes() {
-            showScreen('celebration');
-            createConfetti();
-        }
-
-        function sayNo() {
-            showScreen('reconsider');
-        }
-
-        function backToProposal() {
-            showScreen('proposal');
-        }
-
-        // Confetti
-        function createConfetti() {
-            const colors = ['#e91e63', '#ff4081', '#f50057', '#c51162', '#ff80ab', '#4caf50', '#ffeb3b', '#ff9800'];
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear`;
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 4000);
-            }
-        }
-
-        // Floating hearts
-        function createFloatingHearts() {
-            const container = document.getElementById('heartContainer');
-            const hearts = ['❤️', '💕', '💖', '💗', '💝', '💘', '💓', '💞'];
-            
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart';
-                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                heart.style.animationDelay = Math.random() * 2 + 's';
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                container.appendChild(heart);
-                
-                setTimeout(() => heart.remove(), 10000);
-            }, 500);
-        }
-
-        createFloatingHearts();
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const reg = await navigator.serviceWorker.register(
-        './service-worker.js',
-        { scope: './' }   // 🔥 THIS IS THE KEY
-      );
-      console.log('SW registered with scope:', reg.scope);
-    } catch (e) {
-      console.error('SW registration failed:', e);
-    }
-  });
-}
-    </script>
 </body>
 </html>
