@@ -252,9 +252,9 @@
             transition: all 0.3s ease;
         }
 
-        .puzzle-slot:hover {
+        /* .puzzle-slot:hover {
             transform: scale(1.05);
-        }
+        } */
 
         .puzzle-slot.filled {
             background-size: 400% 400%;
@@ -723,6 +723,33 @@
         body {
             overflow-x: hidden;
         }
+        @media (hover: hover) {
+    .puzzle-slot:hover {
+        transform: scale(1.05);
+    }
+}
+@media (max-width: 600px) {
+
+    .puzzle-board {
+        width: 100%;
+        max-width: 360px;
+        margin: 16px auto;
+    }
+
+    .puzzle-pieces-container {
+        width: 100%;
+        max-width: 360px;
+        margin: 12px auto;
+    }
+}
+.puzzle-board,
+.puzzle-slot,
+.puzzle-piece {
+    touch-action: manipulation;
+    will-change: transform;
+}
+
+
     </style>
 </head>
 <body>
@@ -1096,10 +1123,11 @@
                 slot.className = 'puzzle-slot';
                 slot.dataset.position = i;
                 slot.addEventListener("click", () => placePieceInSlot(i));
-                slot.addEventListener("touchstart", (e) => {
-                    e.preventDefault();
-                    placePieceInSlot(i);
-                }, { passive: false });
+                // slot.addEventListener("touchstart", (e) => {
+                //     e.preventDefault();
+                //     placePieceInSlot(i);
+                // }, { passive: false });
+                slot.addEventListener("click", () => placePieceInSlot(i));
                 board.appendChild(slot);
             }
 
@@ -1112,10 +1140,11 @@
                 piece.style.backgroundImage = `url(${PHOTO_URL})`;
                 piece.style.backgroundPosition = `${col * 33.333}% ${row * 33.333}%`;
                 piece.addEventListener("click", () => selectPuzzlePiece(pieceNum, piece));
-                piece.addEventListener("touchstart", (e) => {
-                    e.preventDefault();
-                    selectPuzzlePiece(pieceNum, piece);
-                }, { passive: false });
+                // piece.addEventListener("touchstart", (e) => {
+                //     e.preventDefault();
+                //     selectPuzzlePiece(pieceNum, piece);
+                // }, { passive: false });
+                piece.addEventListener("click", () => selectPuzzlePiece(pieceNum, piece));
                 pieces.appendChild(piece);
             });
         }
